@@ -15,9 +15,13 @@ public class Schedule {
     private Long id;
 
     @ElementCollection
+    @CollectionTable(name = "schedule_employee")
+    @Column(name = "employee_id")
     private List<Long> employeeIds;
 
     @ElementCollection
+    @CollectionTable(name = "schedule_pet")
+    @Column(name = "pet_id")
     private List<Long> petIds;
 
     private LocalDate date;

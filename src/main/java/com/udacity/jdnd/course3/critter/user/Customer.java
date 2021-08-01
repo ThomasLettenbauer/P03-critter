@@ -17,6 +17,8 @@ public class Customer {
         private String notes;
 
         @ElementCollection
+        @CollectionTable(name = "customer_pet")
+        @Column(name = "pet_id")
         private List<Long> petIds;
 
 
