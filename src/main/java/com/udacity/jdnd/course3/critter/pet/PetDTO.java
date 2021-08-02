@@ -10,6 +10,19 @@ public class PetDTO {
     private long id;
     private PetType type;
     private String name;
+
+    @Override
+    public String toString() {
+        return "PetDTO{" +
+                "id=" + id +
+                ", type=" + type +
+                ", name='" + name + '\'' +
+                ", ownerId=" + ownerId +
+                ", birthDate=" + birthDate +
+                ", notes='" + notes + '\'' +
+                '}';
+    }
+
     private long ownerId;
     private LocalDate birthDate;
     private String notes;

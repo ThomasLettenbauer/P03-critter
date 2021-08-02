@@ -1,5 +1,7 @@
 package com.udacity.jdnd.course3.critter.user;
 
+import com.udacity.jdnd.course3.critter.pet.Pet;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -16,10 +18,8 @@ public class Customer {
 
         private String notes;
 
-        @ElementCollection
-        @CollectionTable(name = "customer_pet")
-        @Column(name = "pet_id")
-        private List<Long> petIds;
+        @OneToMany(mappedBy = "customer")
+        private List<Pet> petList;
 
 
     public Long getId() {
@@ -54,11 +54,21 @@ public class Customer {
         this.notes = notes;
     }
 
-    public List<Long> getPetIds() {
-        return petIds;
+    public List<Pet> getPetList() {
+        return petList;
     }
 
-    public void setPetIds(List<Long> petIds) {
-        this.petIds = petIds;
+    public void setPetList(List<Pet> petList) {
+        this.petList = petList;
+    }
+
+    @Override
+    public String toString() {
+        return "Customer{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", notes='" + notes + '\'' +
+                '}';
     }
 }
