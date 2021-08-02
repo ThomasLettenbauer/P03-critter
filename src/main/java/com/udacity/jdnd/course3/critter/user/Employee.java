@@ -13,6 +13,17 @@ public class Employee {
 
     private String name;
 
+    @ElementCollection(targetClass=EmployeeSkill.class)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name="employee_skill")
+    @Column(name="skill")
+    private Set<EmployeeSkill> skills;
+
+    @ElementCollection(targetClass=DayOfWeek.class)
+    @CollectionTable(name="employee_daysavailable")
+    @Column(name="day")
+    private Set<DayOfWeek> daysAvailable;
+
     public Long getId() {
         return id;
     }
@@ -45,14 +56,5 @@ public class Employee {
         this.daysAvailable = daysAvailable;
     }
 
-    @ElementCollection(targetClass=EmployeeSkill.class)
-    @Enumerated(EnumType.STRING)
-    @CollectionTable(name="employee_skill")
-    @Column(name="skill")
-    private Set<EmployeeSkill> skills;
 
-    @ElementCollection(targetClass=DayOfWeek.class)
-    @CollectionTable(name="employee_daysavailable")
-    @Column(name="day")
-    private Set<DayOfWeek> daysAvailable;
 }

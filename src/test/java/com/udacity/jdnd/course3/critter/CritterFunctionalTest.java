@@ -68,7 +68,7 @@ public class CritterFunctionalTest {
     } */
 
     @Test
-    public void testCreateEmployee(){
+    public void testCreateEmployee() throws ParseException {
         EmployeeDTO employeeDTO = createEmployeeDTO();
         EmployeeDTO newEmployee = userController.saveEmployee(employeeDTO);
         EmployeeDTO retrievedEmployee = userController.getEmployee(newEmployee.getId());
@@ -135,7 +135,7 @@ public class CritterFunctionalTest {
     }
 
     @Test
-    public void testChangeEmployeeAvailability() {
+    public void testChangeEmployeeAvailability() throws ParseException {
         EmployeeDTO employeeDTO = createEmployeeDTO();
         EmployeeDTO emp1 = userController.saveEmployee(employeeDTO);
         Assertions.assertNull(emp1.getDaysAvailable());
@@ -148,7 +148,7 @@ public class CritterFunctionalTest {
     }
 
     @Test
-    public void testFindEmployeesByServiceAndTime() {
+    public void testFindEmployeesByServiceAndTime() throws ParseException {
         EmployeeDTO emp1 = createEmployeeDTO();
         EmployeeDTO emp2 = createEmployeeDTO();
         EmployeeDTO emp3 = createEmployeeDTO();
@@ -299,7 +299,11 @@ public class CritterFunctionalTest {
                 .map(e -> {
                     e.setSkills(activities);
                     e.setDaysAvailable(Sets.newHashSet(date.getDayOfWeek()));
-                    return userController.saveEmployee(e).getId();
+                    try {
+                        return userController.saveEmployee(e).getId();
+                    } catch (ParseException parseException) {
+                        parseException.printStackTrace();
+                    } return null;
                 }).collect(Collectors.toList());
         CustomerDTO cust = userController.saveCustomer(createCustomerDTO());
         List<Long> petIds = IntStream.range(0, numPets)

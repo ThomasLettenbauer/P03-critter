@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.time.DayOfWeek;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -53,40 +54,44 @@ public class UserController {
     @GetMapping("/customer/pet/{petId}")
     public CustomerDTO getOwnerByPet(@PathVariable long petId){
 
-        Customer customer = userService.getOwnerByPet(petId);
-        List<Long> petIdList = petService.getPetsByOwner(customer.getId()).stream()
-                .map(p -> p.getId())
-                .collect(Collectors.toList());
-
         CustomerDTO customerDTO = convertCustomerToCustomerDTO(userService.getOwnerByPet(petId));
-        customerDTO.setPetIds(petIdList);
 
         return customerDTO;
     }
 
     @PostMapping("/employee")
-    public EmployeeDTO saveEmployee(@RequestBody EmployeeDTO employeeDTO) {
-        throw new UnsupportedOperationException();
+    public EmployeeDTO saveEmployee(@RequestBody EmployeeDTO employeeDTO) throws ParseException {
+        Employee employee = convertEmployeeDTOToEmployeeEntity(employeeDTO);
+        Employee newEmployee = userService.saveEmployee(employee);
+        return convertEmployeeToEmployeeDTO(newEmployee);
     }
 
     @PostMapping("/employee/{employeeId}")
     public EmployeeDTO getEmployee(@PathVariable long employeeId) {
-        throw new UnsupportedOperationException();
+        return convertEmployeeToEmployeeDTO(userService.getEmployee(employeeId));
     }
 
     @PutMapping("/employee/{employeeId}")
     public void setAvailability(@RequestBody Set<DayOfWeek> daysAvailable, @PathVariable long employeeId) {
-        throw new UnsupportedOperationException();
+        userService.setAvailability(daysAvailable,employeeId);
     }
 
     @GetMapping("/employee/availability")
-    public List<EmployeeDTO> findEmployeesForService(@RequestBody EmployeeRequestDTO employeeDTO) {
-        throw new UnsupportedOperationException();
+    public List<EmployeeDTO> findEmployeesForService(@RequestBody EmployeeRequestDTO employeeDTO) throws ParseException {
+        EmployeeRequest request = convertRequestDTOToRequestEntity(employeeDTO);
+        List<EmployeeDTO> employeeDTOList =
+        userService.findEmployeesForService(request).stream()
+            .map(e -> convertEmployeeToEmployeeDTO(e))
+            .collect(Collectors.toList());
+        return employeeDTOList;
     }
 
     private CustomerDTO convertCustomerToCustomerDTO(Customer customer) {
+        List<Long> petIdList = petService.getPetsByOwner(customer.getId()).stream()
+                .map(p -> p.getId())
+                .collect(Collectors.toList());
         CustomerDTO customerDTO = modelMapper.map(customer, CustomerDTO.class);
-
+        customerDTO.setPetIds(petIdList);
         return customerDTO;
     }
 
