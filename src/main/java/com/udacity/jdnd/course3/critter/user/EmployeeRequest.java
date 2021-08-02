@@ -8,7 +8,7 @@ import java.util.Set;
 public class EmployeeRequest {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
     @ElementCollection(targetClass=EmployeeSkill.class)
